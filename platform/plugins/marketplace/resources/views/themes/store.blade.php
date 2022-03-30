@@ -1,0 +1,73 @@
+<div class="ps-page--single ps-page--vendor">
+    <section class="ps-store-list">
+        <div class="container">
+            <aside class="ps-block--store-banner">
+                <div class="ps-block__user">
+                    <div class="ps-block__user-avatar">
+                        <img src="{{ $store->logo_url }}" alt="{{ $store->name }}">
+                        @if (EcommerceHelper::isReviewEnabled())
+                            <div class="rating_wrap">
+                                <div class="rating">
+                                    <div class="product_rate" style="width: {{ $reviewsAvg * 20 }}%"></div>
+                                </div>
+                                <span class="rating_num">({{ $reviewsCount }})</span>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="ps-block__user-content">
+                        <h3 class="text-white">{{ $store->name }}</h3>
+                        <p><i class="icon-map-marker"></i> {{ $store->address }}, {{ $store->city }}, {{ $store->state }}, {{ $store->country_name }}</p>
+                        @if ($store->phone)
+                            <p><i class="icon-telephone"></i> {{ $store->phone }}</p>
+                        @endif
+                        @if ($store->email)
+                            <p><i class="icon-envelope"></i> <a href="mailto:{{ $store->email }}">{{ $store->email }}</a></p>
+                        @endif
+                    </div>
+                </div>
+            </aside>
+            <div class="list-content-loading">
+                <div class="half-circle-spinner">
+                    <div class="circle circle-1"></div>
+                    <div class="circle circle-2"></div>
+                </div>
+            </div>
+
+            <div class="shop-product-fillter">
+                <div class="totall-product">
+                    <p>{!! clean(__('We found :total items for you!', ['total' => '<strong class="text-brand">' . $products->total() . '</strong>'])) !!}</p>
+                </div>
+                @include(Theme::getThemeNamespace() . '::views/ecommerce/includes/sort')
+            </div>
+
+            <input type="hidden" name="page" data-value="{{ $products->currentPage() }}">
+            <input type="hidden" name="sort-by" value="{{ request()->input('sort-by') }}">
+            <input type="hidden" name="num" value="{{ request()->input('num') }}">
+            <div class="ps-section__wrapper">
+                <div class="ps-shopping ps-tab-root">
+                    <div class="ps-tabs">
+                        <div class="ps-tab active" id="tab-1">
+                            <div class="ps-shopping-product">
+                                <div class="row">
+                                    @if ($products->count() > 0)
+                                        @foreach($products as $product)
+                                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                                                <div class="ps-product">
+                                                    {!! Theme::partial('product-item', compact('product')) !!}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="ps-pagination">
+                                {!! $products->withQueryString()->links() !!}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
