@@ -44,7 +44,7 @@
                                             </td>
 
                                             <td class="action" data-title="{{ __('Remove') }}">
-                                                <a href="#" data-url="{{ route('public.wishlist.remove', $item->id) }}"><i class="fa fa-trash-alt"></i></a>
+                                                <a href="#" data-url="{{ route('public.wishlist.remove', $item->id) }}" class="js-remove-from-wishlist-button"><i class="fa fa-trash-alt"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -418,15 +418,23 @@ class OrderSupportServiceProvider extends ServiceProvider
             }
         }
         
+
+        if (($promotionDiscountAmount + $couponDiscountAmount - (float)$shippingAmount) > $rawTotal) {
+            $orderAmount = 0;
+        } else {
+            $orderAmount = $rawTotal + (float)$shippingAmount - $promotionDiscountAmount - $couponDiscountAmount;
+        }
+
+
         $wallet_amount = 0;
         if ($request->has('wallet_amount') && $request->wallet_amount == 1) {
             $wallet_amount = format_price(auth('customer')->user()->balance, null, true);
             
-            if ($wallet_amount > $request->amount) {
-                $wallet_amount = $request->amount;
+            if ($wallet_amount > $orderAmount) {
+                $wallet_amount = $orderAmount;
             }
 
-            if ($request->amount > $wallet_amount) {
+            if ($orderAmount > $wallet_amount) {
                 $wallet_amount = $wallet_amount;
             }
 
@@ -435,12 +443,7 @@ class OrderSupportServiceProvider extends ServiceProvider
                 'wallet_amount' => (float)$wallet_amount,
             ]);
         }
-
-        if (($promotionDiscountAmount + $couponDiscountAmount - (float)$shippingAmount) > $rawTotal) {
-            $orderAmount = 0;
-        } else {
-            $orderAmount = $rawTotal + (float)$shippingAmount - $promotionDiscountAmount - $couponDiscountAmount - $wallet_amount;
-        }
+        $orderAmount = ($wallet_amount != 0) ? $orderAmount - $wallet_amount : $orderAmount;
 
         $data = array_merge($request->input(), [
             'amount'          => $orderAmount,
@@ -532,8 +535,10 @@ class OrderSupportServiceProvider extends ServiceProvider
             $totalAmount = $request->wallet_amount;
         }
 
-        $paymentData['charge_id'] = $this->processWalletPaymentMethodPostCheckout($request, $paymentData['wallet_amount']);
-
+        if (isset($paymentData['wallet_amount'])) {
+            $paymentData['charge_id'] = $this->processWalletPaymentMethodPostCheckout($request, $paymentData['wallet_amount']);
+        }
+        
         if ($paymentData['amount'] > $request->wallet_amount) {
             switch ($request->input('payment_method')) {
                 case PaymentMethodEnum::STRIPE:

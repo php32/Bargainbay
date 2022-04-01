@@ -182,4 +182,9 @@ class Order extends BaseModel
     {
         return format_price($this->shipping_amount);
     }
+
+    public function getWalletAmountFormatAttribute()
+    {
+        return format_price($this->wallet_amount);
+    }
 }

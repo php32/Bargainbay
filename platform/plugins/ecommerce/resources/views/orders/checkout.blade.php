@@ -188,7 +188,8 @@
                             <div class="form-group">
                                 <div class="custome-checkbox">
                                     @if(auth('customer')->user()->balance != 0)
-                                    <input class="form-check-input" type="checkbox" name="wallet_amount" value="{{ old('wallet_amount', $wallet_enable) }}" @if($wallet_enable == 1) checked @endif id="wallet_amount">
+                                    <input class="form-check-input" type="checkbox" name="wallet_amount" data-wallet_amount="{{ auth('customer')->user()->balance }}" value="{{ old('wallet_amount', $wallet_enable) }}" 
+                                    @if($wallet_enable == 1) checked @endif id="wallet_amount">
                                     <label for="is_default" class="form-check-label">
                                         <span>Use wallet amount ({{ format_price(auth('customer')->user()->balance) }})</span>
                                     </label>
@@ -208,13 +209,17 @@
                                         <i class="fas fa-spinner fa-spin"></i>
                                     </div>
                                 </div>
-                                <h5 class="checkout-payment-title">{{ __('Payment method') }}</h5>
                                 
                                 @php
                                 if($wallet_enable == 1){
                                     $total_wallet_amount = auth('customer')->user()->balance;
                                     
                                     $totalPrice1 = ($promotionDiscountAmount + $couponDiscountAmount - $shippingAmount) > Cart::instance('cart')->rawTotal() ? 0 : format_price(Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount, null, true);
+
+                                    $paymentMethod = 1;
+                                    if ($total_wallet_amount >= $totalPrice1) {
+                                        $paymentMethod = 0;
+                                    }
 
                                     if ($totalPrice1 > $total_wallet_amount) {
                                         $totalPrice1 = $totalPrice1 - $total_wallet_amount;
@@ -227,6 +232,7 @@
                                     $totalPrice1 = ($promotionDiscountAmount + $couponDiscountAmount - $shippingAmount) > Cart::instance('cart')->rawTotal() ? 0 : format_price(Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount, null, true);
 
                                     $stripeChecked = 1;
+                                    $paymentMethod = 1;
                                 }
                                 @endphp
                                 <input type="hidden" name="amount" value="{{ $totalPrice1 }}">
@@ -234,6 +240,8 @@
                                 <input type="hidden" name="callback_url" value="{{ route('public.payment.paypal.status') }}">
                                 <input type="hidden" name="return_url" value="{{ \Botble\Payment\Supports\PaymentHelper::getRedirectURL($token) }}">
                                 {!! apply_filters(PAYMENT_FILTER_PAYMENT_PARAMETERS, null) !!}
+                                @if($paymentMethod == 1)
+                                <h5 class="checkout-payment-title">{{ __('Payment method') }}</h5>
                                 <ul class="list-group list_payment_method">
                                     @if (setting('payment_stripe_status') == 1)
                                         <li class="list-group-item">
@@ -310,6 +318,7 @@
                                         </li>
                                     @endif
                                 </ul>
+                                @endif
                             </div>
 
                             <br>

@@ -47,6 +47,7 @@ class PayPalPaymentService extends PayPalPaymentAbstract
             ->setItem($data)
             ->createPayment($request->input('description') ?: $request->input('name'));
 
+
         return $checkoutUrl;
     }
 

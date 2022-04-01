@@ -14695,7 +14695,6 @@
                     };
                     loadShippingFeeAtTheSecondTime();
                     $(document).on('change', 'input.shipping_method_input', function() {
-                        console.log('sasas');
                         loadShippingFeeAtTheSecondTime();
                     });
                     $(document).on('change', 'input[name=shipping_method]', function(event) {
