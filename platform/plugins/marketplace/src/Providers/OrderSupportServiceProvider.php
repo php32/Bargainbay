@@ -317,15 +317,12 @@ class OrderSupportServiceProvider extends ServiceProvider
         $totalAmount = format_price($orders->pluck('amount')->sum(), null, true); // Calculator in here
 
         $paymentData = $this->processPaymentMethodPostCheckout($request, $totalAmount);
-
+        
         if ($checkoutUrl = Arr::get($paymentData, 'checkoutUrl')) {
             return redirect($checkoutUrl);
         }
 
         if ($paymentData['error']) {
-            if (isset($paymentData['wallet_amount'])) {
-                $refundwWallet = $this->depositWalletPaymentMethodPostCheckout($paymentData['wallet_amount']);
-            }
             return $response
                 ->setError()
                 ->setNextUrl(route('public.checkout.information', $token))
@@ -536,10 +533,13 @@ class OrderSupportServiceProvider extends ServiceProvider
         }
 
         if (isset($paymentData['wallet_amount'])) {
-            $paymentData['charge_id'] = $this->processWalletPaymentMethodPostCheckout($request, $paymentData['wallet_amount']);
+            $transaction = $this->processWalletPaymentMethodPostCheckout($request, $paymentData['wallet_amount']);
+            if (!$request->input('payment_method')) {
+                $paymentData['charge_id'] = $transaction->uuid;
+            }
         }
         
-        if ($paymentData['amount'] > $request->wallet_amount) {
+        // if ($paymentData['amount'] > $request->wallet_amount) {
             switch ($request->input('payment_method')) {
                 case PaymentMethodEnum::STRIPE:
                     $stripeService = $this->app->make(StripePaymentService::class);
@@ -575,6 +575,10 @@ class OrderSupportServiceProvider extends ServiceProvider
                     $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
                     break;
             }
+        // }
+
+        if (!$paymentData['error'] && !empty($transaction)) {
+            auth('customer')->user()->confirm($transaction);
         }
 
         return $paymentData;
@@ -587,7 +591,7 @@ class OrderSupportServiceProvider extends ServiceProvider
      */
     public function processWalletPaymentMethodPostCheckout($request, $wallet_amount)
     {
-        $transaction = auth('customer')->user()->withdraw($wallet_amount); 
+        $transaction = auth('customer')->user()->withdraw($wallet_amount, null, false); 
         $chargeId = $transaction->uuid;
         if (!$request->input('payment_method')) {
 
@@ -605,7 +609,7 @@ class OrderSupportServiceProvider extends ServiceProvider
             ]);
         }
 
-        return $chargeId;
+        return $transaction;
     }
 
     public function depositWalletPaymentMethodPostCheckout($wallet_amount)

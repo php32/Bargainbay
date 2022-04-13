@@ -163,7 +163,7 @@ class PublicCheckoutController
 
         $sessionCheckoutData = OrderHelper::getOrderSessionData($token);
 
-        //---------------------------------- Optimize
+        //---------------------------------- Optimize----------------------------//
         [$products, $weight] = $this->getProductsInCart();
         if (!$products->count()) {
             return $response->setNextUrl(route('public.cart'));
@@ -598,7 +598,7 @@ class PublicCheckoutController
         $sessionData = OrderHelper::getOrderSessionData($token);
 
         $this->processOrderData($token, $sessionData, $request);
-
+        
         if (is_plugin_active('marketplace')) {
             $products = Cart::instance('cart')->products();
 

@@ -5,8 +5,11 @@
 @section('content')
 
     @if (Cart::instance('cart')->count() > 0)
-        <link rel="stylesheet" href="{{ asset('vendor/core/plugins/payment/css/payment.css') }}?v=1.0.3">
-        <script src="{{ asset('vendor/core/plugins/payment/js/payment.js') }}?v=1.0.3"></script>
+        {{-- <link rel="stylesheet" href="{{ asset('vendor/core/plugins/payment/css/payment.css') }}?v=1.0.3"> --}}
+        {{-- <script src="{{ asset('vendor/core/plugins/payment/js/payment.js') }}?v=1.0.3"></script> --}}
+        
+        <link rel="stylesheet" href="https://wowy.botble.com/vendor/core/plugins/payment/css/payment.css?v=1.0.6">
+        <script src="https://wowy.botble.com/vendor/core/plugins/payment/js/payment.js?v=1.0.6"></script>
 
         {!! Form::open(['route' => ['public.checkout.process', $token], 'class' => 'checkout-form payment-checkout-form', 'id' => 'checkout-form']) !!}
         <input type="hidden" name="checkout-token" id="checkout-token" value="{{ $token }}">
@@ -245,21 +248,21 @@
                                 <ul class="list-group list_payment_method">
                                     @if (setting('payment_stripe_status') == 1)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="checkbox" name="payment_method" id="payment_stripe"
-                                                   value="stripe" @if (!setting('default_payment_method') || setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::STRIPE && $stripeChecked == 1) checked data-toggle="collapse" @endif data-target=".payment_stripe_wrap" data-parent=".list_payment_method">
+                                            <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_stripe"
+                                                   value="stripe" @if (!setting('default_payment_method') || setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::STRIPE) checked @endif data-toggle="collapse" data-target=".payment_stripe_wrap" data-parent=".list_payment_method">
                                             <label for="payment_stripe" class="text-left">
                                                 {{ setting('payment_stripe_name', trans('plugins/payment::payment.payment_via_card')) }}
                                             </label>
-                                            <div class="payment_stripe_wrap payment_collapse_wrap collapse @if (!setting('default_payment_method') || setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::STRIPE && $stripeChecked == 1) show @endif">
+                                            <div class="payment_stripe_wrap payment_collapse_wrap collapse @if (!setting('default_payment_method') || setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::STRIPE) show @endif">
                                                 <div class="card-checkout">
                                                     <div class="form-group">
-                                                        <div class="stripe-card-wrapper stripe-card"></div>
+                                                        <div class="stripe-card-wrapper"></div>
                                                     </div>
                                                     <div class="form-group @if ($errors->has('number') || $errors->has('expiry')) has-error @endif">
                                                         <div class="row">
                                                             <div class="col-sm-9">
                                                                 <input placeholder="{{ trans('plugins/payment::payment.card_number') }}"
-                                                                       class="form-control" type="text" id="stripe-number" data-stripe="number" autocomplete="off">
+                                                                       class="form-control" type="text" id="stripe-number" data-stripe="number">
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <input placeholder="{{ trans('plugins/payment::payment.mm_yy') }}" class="form-control"
@@ -271,7 +274,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-9">
                                                                 <input placeholder="{{ trans('plugins/payment::payment.full_name') }}"
-                                                                       class="form-control" id="stripe-name" type="text" data-stripe="name" autocomplete="off">
+                                                                       class="form-control" id="stripe-name" type="text" data-stripe="name">
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <input placeholder="{{ trans('plugins/payment::payment.cvc') }}" class="form-control"
@@ -286,10 +289,41 @@
                                     @endif
                                     @if (setting('payment_paypal_status') == 1)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="checkbox" name="payment_method" id="payment_paypal"
+                                            <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_paypal"
                                                    @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::PAYPAL) checked @endif
-                                                   value="paypal">
+                                                   value="paypal" data-toggle="collapse" data-target=".payment_paypal_wrap" data-parent=".list_payment_method">
                                             <label for="payment_paypal" class="text-left">{{ setting('payment_paypal_name', trans('plugins/payment::payment.payment_via_paypal')) }}</label>
+                                            <div class="payment_paypal_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::PAYPAL) show @endif" style="padding: 15px 0;">
+                                                {!! clean(setting('payment_paypal_description')) !!}
+
+                                                @php $supportedCurrencies = (new \Botble\Payment\Services\Gateways\PayPalPaymentService)->supportedCurrencyCodes(); @endphp
+                                                @if (!in_array(get_application_currency()->title, $supportedCurrencies))
+                                                    <div class="alert alert-warning" style="margin-top: 15px;">
+                                                        {{ __(":name doesn't support :currency. List of currencies supported by :name: :currencies.", ['name' => 'PayPal', 'currency' => get_application_currency()->title, 'currencies' => implode(', ', $supportedCurrencies)]) }}
+
+                                                        <div style="margin-top: 10px;">
+                                                            {{ __('Learn more') }}: <a href="https://developer.paypal.com/docs/api/reference/currency-codes" target="_blank" rel="nofollow">https://developer.paypal.com/docs/api/reference/currency-codes</a>
+                                                        </div>
+
+                                                        @php
+                                                            $currencies = get_all_currencies();
+
+                                                            $currencies = $currencies->filter(function ($item) use ($supportedCurrencies) { return in_array($item->title, $supportedCurrencies); });
+                                                        @endphp
+                                                        @if (count($currencies))
+                                                            <div style="margin-top: 10px;">{{ __('Please switch currency to any supported currency') }}:&nbsp;&nbsp;
+                                                                @foreach ($currencies as $currency)
+                                                                    <a href="{{ route('public.change-currency', $currency->title) }}" @if (get_application_currency_id() == $currency->id) class="active" @endif><span>{{ $currency->title }}</span></a>
+                                                                    @if (!$loop->last)
+                                                                        &nbsp; | &nbsp;
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                @endif
+
+                                            </div>
                                         </li>
                                     @endif
 
@@ -297,18 +331,25 @@
 
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="checkbox" name="payment_method" id="payment_cod"
+                                            <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_cod"
                                                    @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) checked @endif
                                                    value="cod" data-toggle="collapse" data-target=".payment_cod_wrap" data-parent=".list_payment_method">
                                             <label for="payment_cod" class="text-left">{{ setting('payment_cod_name', trans('plugins/payment::payment.payment_via_cod')) }}</label>
                                             <div class="payment_cod_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) show @endif" style="padding: 15px 0;">
                                                 {!! clean(setting('payment_cod_description')) !!}
+
+                                                @php $minimumOrderAmount = setting('payment_cod_minimum_amount', 0); @endphp
+                                                @if ($minimumOrderAmount > Cart::instance('cart')->rawSubTotal())
+                                                    <div class="alert alert-warning" style="margin-top: 15px;">
+                                                        {{ __('Minimum order amount to use COD (Cash On Delivery) payment method is :amount, you need to buy more :more to place an order!', ['amount' => format_price($minimumOrderAmount), 'more' => format_price($minimumOrderAmount - Cart::instance('cart')->rawSubTotal())]) }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         </li>
                                     @endif
                                     @if (setting('payment_bank_transfer_status') == 1)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="checkbox" name="payment_method" id="payment_bank_transfer"
+                                            <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_bank_transfer"
                                                    @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) checked @endif
                                                    value="bank_transfer" data-toggle="collapse" data-target=".payment_bank_transfer_wrap" data-parent=".list_payment_method">
                                             <label for="payment_bank_transfer" class="text-left">{{ setting('payment_bank_transfer_name', trans('plugins/payment::payment.payment_via_bank_transfer')) }}</label>
@@ -358,9 +399,9 @@
         </div>
         
         @if (setting('payment_stripe_status') == 1)
+            <script src="{{ asset('https://js.stripe.com/v2/') }}"></script>
             <link rel="stylesheet" href="{{ asset('vendor/core/plugins/payment/libraries/card/card.css') }}">
             <script src="{{ asset('vendor/core/plugins/payment/libraries/card/card.js') }}"></script>
-            <script src="{{ asset('https://js.stripe.com/v2/') }}"></script>
         @endif
     @else
         <div class="container">
