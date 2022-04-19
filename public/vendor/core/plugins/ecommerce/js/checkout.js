@@ -37,9 +37,6 @@
                 function _createClass(Constructor, protoProps, staticProps) {
                     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
                     if (staticProps) _defineProperties(Constructor, staticProps);
-                    Object.defineProperty(Constructor, "prototype", {
-                        writable: false
-                    });
                     return Constructor;
                 }
                 var CheckoutAddress = /*#__PURE__*/ function() {
@@ -106,9 +103,6 @@
                 function _createClass(Constructor, protoProps, staticProps) {
                     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
                     if (staticProps) _defineProperties(Constructor, staticProps);
-                    Object.defineProperty(Constructor, "prototype", {
-                        writable: false
-                    });
                     return Constructor;
                 }
                 var DiscountManagement = /*#__PURE__*/ function() {
@@ -5142,14 +5136,14 @@
                                     },
                                     "CHILD": function(match) {
                                         /* matches from matchExpr["CHILD"]
-                                            1 type (only|nth|...)
-                                            2 what (child|of-type)
-                                            3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
-                                            4 xn-component of xn+y argument ([+-]?\d*n|)
-                                            5 sign of xn-component
-                                            6 x of xn-component
-                                            7 sign of y-component
-                                            8 y of y-component
+                                          1 type (only|nth|...)
+                                          2 what (child|of-type)
+                                          3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
+                                          4 xn-component of xn+y argument ([+-]?\d*n|)
+                                          5 sign of xn-component
+                                          6 x of xn-component
+                                          7 sign of y-component
+                                          8 y of y-component
                                         */
                                         match[1] = match[1].toLowerCase();
                                         if (match[1].slice(0, 3) === "nth") {
@@ -6390,22 +6384,22 @@
                      * Create a callback list using the following parameters:
                      *
                      *  options: an optional list of space-separated options that will change how
-                     *          the callback list behaves or a more traditional option object
+                     *      the callback list behaves or a more traditional option object
                      *
                      * By default a callback list will act like an event callback list and can be
                      * "fired" multiple times.
                      *
                      * Possible options:
                      *
-                     *  once:           will ensure the callback list can only be fired once (like a Deferred)
+                     *  once:     will ensure the callback list can only be fired once (like a Deferred)
                      *
-                     *  memory:         will keep track of previous values and will call any callback added
-                     *                  after the list has been fired right away with the latest "memorized"
-                     *                  values (like a Deferred)
+                     *  memory:     will keep track of previous values and will call any callback added
+                     *          after the list has been fired right away with the latest "memorized"
+                     *          values (like a Deferred)
                      *
-                     *  unique:         will ensure a callback can only be added once (no duplicate in the list)
+                     *  unique:     will ensure a callback can only be added once (no duplicate in the list)
                      *
-                     *  stopOnFalse:    interrupt callings when a callback returns false
+                     *  stopOnFalse:  interrupt callings when a callback returns false
                      *
                      */
                     jQuery.Callbacks = function(options) {
@@ -7105,7 +7099,7 @@
                     //
                     //  1. Enforce API surface and semantic compatibility with 1.9.x branch
                     //  2. Improve the module's maintainability by reducing the storage
-                    //      paths to a single mechanism.
+                    //    paths to a single mechanism.
                     //  3. Use the same single mechanism to support "private" and "user" data.
                     //  4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
                     //  5. Avoid exposing implementation details on user objects (eg. expando properties)
@@ -14625,9 +14619,6 @@
         function _createClass(Constructor, protoProps, staticProps) {
             if (protoProps) _defineProperties(Constructor.prototype, protoProps);
             if (staticProps) _defineProperties(Constructor, staticProps);
-            Object.defineProperty(Constructor, "prototype", {
-                writable: false
-            });
             return Constructor;
         }
         try {
@@ -14643,16 +14634,7 @@
             _createClass(MainCheckout, [{
                 key: "init",
                 value: function init() {
-                    var shippingForm = '#main-checkout-product-info #shipping-method-wrapper';
-                    var disablePaymentMethodsForm = function disablePaymentMethodsForm() {
-                        $('.payment-info-loading').show();
-                        $('.payment-checkout-btn').prop('disabled', true);
-                    };
-                    var enablePaymentMethodsForm = function enablePaymentMethodsForm() {
-                        $('.payment-info-loading').hide();
-                        $('.payment-checkout-btn').prop('disabled', false);
-                        document.dispatchEvent(new CustomEvent('payment-form-reloaded'));
-                    };
+                    var target = '#main-checkout-product-info';
                     var loadShippingFeeAtTheFirstTime = function loadShippingFeeAtTheFirstTime() {
                         var shippingMethod = $(document).find('input[name=shipping_method]:checked').first();
                         if (!shippingMethod.length) {
@@ -14660,12 +14642,12 @@
                         }
                         if (shippingMethod.length) {
                             shippingMethod.trigger('click');
-                            disablePaymentMethodsForm();
+                            $('.payment-info-loading').show();
+                            $('.payment-checkout-btn').prop('disabled', true);
                             $('.mobile-total').text('...');
-                            $('.shipping-info-loading').show();
-                            $(shippingForm).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option') + ' ' + shippingForm + ' > *', function() {
-                                $('.shipping-info-loading').hide();
-                                enablePaymentMethodsForm();
+                            $(target).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option') + ' ' + target + ' > *', function() {
+                                $('.payment-info-loading').hide();
+                                $('.payment-checkout-btn').prop('disabled', false);
                             });
                         }
                     };
@@ -14675,7 +14657,7 @@
                         if (!$marketplace || !$marketplace.length) {
                             return;
                         }
-                        var shippingMethods = $(shippingForm).find('input.shipping_method_input');
+                        var shippingMethods = $(target).find('input.shipping_method_input');
                         var methods = {
                             'shipping_method': {},
                             'shipping_option': {}
@@ -14704,62 +14686,33 @@
                                 });
                             }
                         }
-                        disablePaymentMethodsForm();
-                        $('.shipping-info-loading').show();
-                        $(shippingForm).load(window.location.href + '?' + $.param(methods) + ' ' + shippingForm + ' > *', function() {
-                            $('.shipping-info-loading').hide();
-                            enablePaymentMethodsForm();
+                        $('.payment-info-loading').show();
+                        $('.payment-checkout-btn').prop('disabled', true);
+                        $(target).load(window.location.href + '?' + $.param(methods) + ' ' + target + ' > *', function() {
+                            $('.payment-info-loading').hide();
+                            $('.payment-checkout-btn').prop('disabled', false);
                         });
                     };
                     loadShippingFeeAtTheSecondTime();
                     $(document).on('change', 'input.shipping_method_input', function() {
                         loadShippingFeeAtTheSecondTime();
                     });
-
-                    var shippingForm1 = '#main-checkout-product-info';
-                    $(document).on('change', '#wallet_amount', function(event) {
-                        disablePaymentMethodsForm();
-                        if ($(this).prop('checked')) {
-                            $(shippingForm1).load(window.location.href + '?wallet_use=1' + shippingForm1 + ' > *', function() {
-                                enablePaymentMethodsForm();
-                            });
-                        } else {
-                            $(shippingForm1).load(window.location.href + '?wallet_use=0' + shippingForm1 + ' > *', function() {
-                                enablePaymentMethodsForm();
-                            });
-                        }
-                    });
-
                     $(document).on('change', 'input[name=shipping_method]', function(event) {
                         // Fixed: set shipping_option value based on shipping_method change:
                         var $this = $(event.currentTarget);
                         $('input[name=shipping_option]').val($this.data('option'));
-                        disablePaymentMethodsForm();
+                        $('.payment-info-loading').show();
+                        $('.payment-checkout-btn').prop('disabled', true);
                         $('.mobile-total').text('...');
-                        $('.shipping-info-loading').show();
-                        $(shippingForm).load(window.location.href + '?shipping_method=' + $this.val() + '&shipping_option=' + $this.data('option') + ' ' + shippingForm + ' > *', function() {
-                            $('.shipping-info-loading').hide();
-                            enablePaymentMethodsForm();
+                        $(target).load(window.location.href + '?shipping_method=' + $this.val() + '&shipping_option=' + $this.data('option') + ' ' + target + ' > *', function() {
+                            $('.payment-info-loading').hide();
+                            $('.payment-checkout-btn').prop('disabled', false);
                         });
                     });
-
-
-                    var validatedFormFields = function validatedFormFields() {
-                        if ($('#address_id').val()) {
-                            return true;
-                        }
-                        var validated = true;
-                        $.each($(document).find('.address-control-item-required'), function(index, el) {
-                            if (!$(el).val()) {
-                                validated = false;
-                            }
-                        });
-                        return validated;
-                    };
-                    $(document).on('change', '.customer-address-payment-form .address-control-item', function(event) {
-                        var _self = $(event.currentTarget);
+                    $(document).on('change', '.customer-address-payment-form .address-control-item', function() {
+                        var _self = $(this);
                         _self.closest('.form-group').find('.text-danger').remove();
-                        if (validatedFormFields()) {
+                        if ($('#address_id').val() || $('#address_country').val() && $('#address_state').val() && $('#address_city').val() && $('#address_address').val()) {
                             $.ajax({
                                 type: 'POST',
                                 cache: false,
@@ -14769,17 +14722,17 @@
                                 processData: false,
                                 success: function success(res) {
                                     if (!res.error) {
-                                        disablePaymentMethodsForm();
-                                        var $wrapper = $(shippingForm);
+                                        $('.shipping-info-loading').show();
+                                        $('.payment-checkout-btn').prop('disabled', true);
+                                        var $wrapper = $('#shipping-method-wrapper');
                                         if ($wrapper.length) {
-                                            $('.shipping-info-loading').show();
-                                            $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', function() {
-                                                $('.shipping-info-loading').hide();
+                                            $wrapper.load(window.location.href + ' #shipping-method-wrapper > *', function() {
                                                 var isChecked = $wrapper.find('input[name=shipping_method]:checked');
                                                 if (!isChecked) {
                                                     $wrapper.find('input[name=shipping_method]:first-child').trigger('click'); // need re-check
                                                 }
-                                                enablePaymentMethodsForm();
+                                                $('.payment-checkout-btn').prop('disabled', false);
+                                                $('.shipping-info-loading').hide();
                                             });
                                         }
                                         loadShippingFeeAtTheSecondTime(); // marketplace

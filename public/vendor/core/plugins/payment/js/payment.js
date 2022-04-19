@@ -3,8 +3,7 @@
     var e = e || {};
     e.initResources = function() {
         var e = $(document).find("input[name=payment_method]").first();
-        e.length && (e.trigger("click").trigger("change"), e.closest(".list-group-item").find(".payment_collapse_wrap").addClass("show")), 
-        $(".stripe-card-wrapper").length > 0 && new Card({
+        e.length && (e.trigger("click").trigger("change"), e.closest(".list-group-item").find(".payment_collapse_wrap").addClass("show")), $(".stripe-card-wrapper").length > 0 && new Card({
             form: ".payment-checkout-form",
             container: ".stripe-card-wrapper",
             formSelectors: {

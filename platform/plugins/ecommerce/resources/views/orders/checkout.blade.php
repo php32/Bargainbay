@@ -5,11 +5,8 @@
 @section('content')
 
     @if (Cart::instance('cart')->count() > 0)
-        {{-- <link rel="stylesheet" href="{{ asset('vendor/core/plugins/payment/css/payment.css') }}?v=1.0.3"> --}}
-        {{-- <script src="{{ asset('vendor/core/plugins/payment/js/payment.js') }}?v=1.0.3"></script> --}}
-        
-        <link rel="stylesheet" href="https://wowy.botble.com/vendor/core/plugins/payment/css/payment.css?v=1.0.6">
-        <script src="https://wowy.botble.com/vendor/core/plugins/payment/js/payment.js?v=1.0.6"></script>
+        <link rel="stylesheet" href="{{ asset('vendor/core/plugins/payment/css/payment.css') }}?v=1.0.3">
+        <script src="{{ asset('vendor/core/plugins/payment/js/payment.js') }}?v=1.0.3"></script>
 
         {!! Form::open(['route' => ['public.checkout.process', $token], 'class' => 'checkout-form payment-checkout-form', 'id' => 'checkout-form']) !!}
         <input type="hidden" name="checkout-token" id="checkout-token" value="{{ $token }}">

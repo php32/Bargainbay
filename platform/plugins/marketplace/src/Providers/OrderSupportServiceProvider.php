@@ -539,48 +539,46 @@ class OrderSupportServiceProvider extends ServiceProvider
             }
         }
         
-        // if ($paymentData['amount'] > $request->wallet_amount) {
-            switch ($request->input('payment_method')) {
-                case PaymentMethodEnum::STRIPE:
-                    $stripeService = $this->app->make(StripePaymentService::class);
-                    $result = $stripeService->execute($request);
-                    if ($stripeService->getErrorMessage()) {
-                        $paymentData['error'] = true;
-                        $paymentData['message'] = $stripeService->getErrorMessage();
-                    }
+        switch ($request->input('payment_method')) {
+            case PaymentMethodEnum::STRIPE:
+                $stripeService = $this->app->make(StripePaymentService::class);
+                $result = $stripeService->execute($request);
+                if ($stripeService->getErrorMessage()) {
+                    $paymentData['error'] = true;
+                    $paymentData['message'] = $stripeService->getErrorMessage();
+                }
 
-                    $paymentData['charge_id'] = $result;
+                $paymentData['charge_id'] = $result;
 
-                    break;
-                case PaymentMethodEnum::PAYPAL:
-                    $payPalService = $this->app->make(PayPalPaymentService::class);
+                break;
+            case PaymentMethodEnum::PAYPAL:
+                $payPalService = $this->app->make(PayPalPaymentService::class);
 
-                    $checkoutUrl = $payPalService->execute($request);
-                    if ($checkoutUrl) {
-                        $paymentData['checkoutUrl'] = $checkoutUrl;
-                    } else {
-                        $paymentData['error'] = true;
-                        $paymentData['message'] = $payPalService->getErrorMessage();
-                    }
+                $checkoutUrl = $payPalService->execute($request);
+                if ($checkoutUrl) {
+                    $paymentData['checkoutUrl'] = $checkoutUrl;
+                } else {
+                    $paymentData['error'] = true;
+                    $paymentData['message'] = $payPalService->getErrorMessage();
+                }
 
-                    break;
-                case PaymentMethodEnum::COD:
-                    $paymentData['charge_id'] = $this->app->make(CodPaymentService::class)->execute($request);
-                    break;
+                break;
+            case PaymentMethodEnum::COD:
+                $paymentData['charge_id'] = $this->app->make(CodPaymentService::class)->execute($request);
+                break;
 
-                case PaymentMethodEnum::BANK_TRANSFER:
-                    $paymentData['charge_id'] = $this->app->make(BankTransferPaymentService::class)->execute($request);
-                    break;
-                default:
-                    $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
-                    break;
-            }
-        // }
+            case PaymentMethodEnum::BANK_TRANSFER:
+                $paymentData['charge_id'] = $this->app->make(BankTransferPaymentService::class)->execute($request);
+                break;
+            default:
+                $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
+                break;
+        }
 
         if (!$paymentData['error'] && !empty($transaction)) {
             auth('customer')->user()->confirm($transaction);
         }
-
+        
         return $paymentData;
     }
 

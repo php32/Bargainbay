@@ -36,6 +36,6 @@
         <p>{{ __('Total') }}:</p>
     </div>
     <div class="col-6 float-right">
-        <p class="total-text raw-total-text"> {{ ($order->amount > $order->wallet_amount) ? format_price($order->amount + $order->wallet_amount) :  format_price($order->wallet_amount) }} </p>
+                <p class="total-text raw-total-text"> {{ ($order->amount > $order->wallet_amount) ? format_price($order->amount) :  format_price($order->wallet_amount) }} </p>
     </div>
 </div>

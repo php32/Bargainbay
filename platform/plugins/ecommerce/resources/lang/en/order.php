@@ -149,6 +149,7 @@ return [
     'note'                                                                                                                  => 'Note',
     'note_for_order'                                                                                                        => 'Note for order...',
     'amount'                                                                                                                => 'Amount',
+    'wallet_amount'                                                                                                                => 'Wallet Amount',
     'add_discount'                                                                                                          => 'Add discount',
     'discount'                                                                                                              => 'Discount',
     'add_shipping_fee'                                                                                                      => 'Add shipping fee',

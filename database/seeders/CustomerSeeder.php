@@ -25,7 +25,7 @@ class CustomerSeeder extends BaseSeeder
 
         $customer = Customer::create([
             'name'     => 'John Smith',
-            'email'    => 'john.smith@botble.com',
+            'email'    => 'john.smith@bargain.com',
             'password' => bcrypt('12345678'),
             'phone'    => $faker->e164PhoneNumber,
             'avatar'   => 'customers/1.jpg',

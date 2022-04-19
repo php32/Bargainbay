@@ -23,9 +23,9 @@ class UserSeeder extends BaseSeeder
         $user = new User;
         $user->first_name = 'System';
         $user->last_name = 'Admin';
-        $user->email = 'admin@botble.com';
-        $user->username = 'botble';
-        $user->password = bcrypt('159357');
+        $user->email = 'admin@bargainbay.com';
+        $user->username = 'bargainbay';
+        $user->password = bcrypt('123456');
         $user->super_user = 1;
         $user->manage_supers = 1;
         $user->save();

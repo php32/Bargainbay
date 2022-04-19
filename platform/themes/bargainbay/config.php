@@ -50,6 +50,7 @@ return [
             $theme->asset()->usePath()->add('slick-css', 'css/plugins/slick.css');
 
             $theme->asset()->usePath()->add('style-css', 'css/style.css', [], [], $version);
+            $theme->asset()->usePath()->add('lightgallery-css', 'css/lightgallery.css', [], [], $version);
 
             if (BaseHelper::siteLanguageDirection() == 'rtl') {
                 $theme->asset()->usePath()->add('rtl', 'css/rtl.css', [], [], $version);
@@ -67,6 +68,8 @@ return [
             $theme->asset()->container('footer')->usePath()->add('jquery.countdown-js', 'js/plugins/jquery.countdown.min.js');
             $theme->asset()->container('footer')->usePath()->add('scrollup-js', 'js/plugins/scrollup.js');
             $theme->asset()->container('footer')->usePath()->add('jquery.vticker-js', 'js/plugins/jquery.vticker-min.js');
+            $theme->asset()->container('footer')->usePath()->add('lightgallery.js', 'js/lightgallery.js');
+
 
             // $theme->asset()->usePath()->add('magnific-popup-css', 'css/plugins/magnific-popup.css');
             // $theme->asset()->container('footer')->usePath()->add('magnific-popup-js', 'js/plugins/magnific-popup.js');

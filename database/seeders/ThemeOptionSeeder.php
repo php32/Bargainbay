@@ -36,11 +36,11 @@ class ThemeOptionSeeder extends BaseSeeder
             ],
             [
                 'key'   => 'theme-' . $theme . '-site_title',
-                'value' => 'Wowy - Laravel Multipurpose eCommerce Script',
+                'value' => 'BargainBay - Laravel Multipurpose eCommerce Script',
             ],
             [
                 'key'   => 'theme-' . $theme . '-copyright',
-                'value' => 'Copyright © 2021 Wowy all rights reserved. Powered by Botble.',
+                'value' => 'Copyright © 2021 BargainBay all rights reserved. Powered by BargainBay.',
             ],
             [
                 'key'   => 'theme-' . $theme . '-favicon',
@@ -280,7 +280,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'office@botble.com',
+                    'value' => 'office@bargain.com',
                 ],
             ],
             [
@@ -298,7 +298,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'studio@botble.com',
+                    'value' => 'studio@bargain.com',
                 ],
             ],
             [
@@ -316,7 +316,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'shop@botble.com',
+                    'value' => 'shop@bargain.com',
                 ],
             ],
         ];
@@ -335,7 +335,7 @@ class ThemeOptionSeeder extends BaseSeeder
             ],
             [
                 'key'   => 'theme-' . $theme . '-vi-copyright',
-                'value' => 'Bản quyền © 2021 Wowy tất cả quyền đã được bảo hộ. Phát triển bởi Botble.',
+                'value' => 'Bản quyền © 2021 BargainBay tất cả quyền đã được bảo hộ. Phát triển bởi Bargain.',
             ],
             [
                 'key'   => 'theme-' . $theme . '-vi-working_hours',
@@ -441,7 +441,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'office@botble.com',
+                    'value' => 'office@bargain.com',
                 ],
             ],
             [
@@ -459,7 +459,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'studio@botble.com',
+                    'value' => 'studio@bargain.com',
                 ],
             ],
             [
@@ -477,7 +477,7 @@ class ThemeOptionSeeder extends BaseSeeder
                 ],
                 [
                     'key'   => 'email',
-                    'value' => 'shop@botble.com',
+                    'value' => 'shop@bargain.com',
                 ],
             ],
         ];

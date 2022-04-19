@@ -64,6 +64,9 @@ class OrderTable extends TableAbstract
             ->editColumn('amount', function ($item) {
                 return format_price($item->amount);
             })
+            ->editColumn('wallet_amount', function ($item) {
+                return format_price($item->wallet_amount);
+            })
             ->editColumn('shipping_amount', function ($item) {
                 return format_price($item->shipping_amount);
             })
@@ -100,6 +103,7 @@ class OrderTable extends TableAbstract
                 'user_id',
                 'created_at',
                 'amount',
+                'wallet_amount',
                 'tax_amount',
                 'shipping_amount',
                 'payment_id',
@@ -127,6 +131,10 @@ class OrderTable extends TableAbstract
             ],
             'amount'  => [
                 'title' => trans('plugins/ecommerce::order.amount'),
+                'class' => 'text-center',
+            ],
+            'wallet_amount'  => [
+                'title' => trans('plugins/ecommerce::order.wallet_amount'),
                 'class' => 'text-center',
             ],
         ];

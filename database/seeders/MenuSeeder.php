@@ -33,102 +33,15 @@ class MenuSeeder extends BaseSeeder
                         [
                             'title' => 'Home',
                             'url'   => '/',
-                            'children' => [
-                                [
-                                    'title'          => 'Home 1',
-                                    'reference_id'   => 1,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Home 2',
-                                    'reference_id'   => 2,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Home 3',
-                                    'reference_id'   => 3,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Home 4',
-                                    'reference_id'   => 4,
-                                    'reference_type' => Page::class,
-                                ],
-                            ],
                         ],
                         [
                             'title'    => 'Shop',
                             'url'      => '/products',
-                            'children' => [
-                                [
-                                    'title' => 'Shop Grid - Full Width',
-                                    'url'   => '/products',
-                                ],
-                                [
-                                    'title' => 'Shop Grid - Right Sidebar',
-                                    'url'   => '/products?layout=product-right-sidebar',
-                                ],
-                                [
-                                    'title' => 'Shop Grid - Left Sidebar',
-                                    'url'   => '/products?layout=product-left-sidebar',
-                                ],
-                                [
-                                    'title'          => 'Products Of Category',
-                                    'reference_id'   => 1,
-                                    'reference_type' => ProductCategory::class,
-                                ],
-                            ],
-                        ],
-                        [
-                            'title'    => 'Product',
-                            'url'      => '#',
-                            'children' => [
-                                [
-                                    'title' => 'Product Right Sidebar',
-                                    'url'   => str_replace(url(''), '', Product::find(1)->url),
-                                ],
-                                [
-                                    'title' => 'Product Left Sidebar',
-                                    'url'   => str_replace(url(''), '', Product::find(2)->url),
-                                ],
-                                [
-                                    'title' => 'Product Full Width',
-                                    'url'   => str_replace(url(''), '', Product::find(3)->url),
-                                ],
-                            ],
                         ],
                         [
                             'title'          => 'Blog',
                             'reference_id'   => 5,
                             'reference_type' => Page::class,
-                            'children'       => [
-                                [
-                                    'title'          => 'Blog Right Sidebar',
-                                    'reference_id'   => 5,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Blog Left Sidebar',
-                                    'reference_id'   => 13,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title' => 'Single Post Right Sidebar',
-                                    'url'   => str_replace(url(''), '', Post::find(1)->url),
-                                ],
-                                [
-                                    'title' => 'Single Post Left Sidebar',
-                                    'url'   => str_replace(url(''), '', Post::find(2)->url),
-                                ],
-                                [
-                                    'title' => 'Single Post Full Width',
-                                    'url'   => str_replace(url(''), '', Post::find(3)->url),
-                                ],
-                                [
-                                    'title' => 'Single Post with Product Listing',
-                                    'url'   => str_replace(url(''), '', Post::find(4)->url),
-                                ],
-                            ],
                         ],
                         [
                             'title'          => 'Contact',
@@ -219,94 +132,15 @@ class MenuSeeder extends BaseSeeder
                         [
                             'title' => 'Trang chủ',
                             'url'   => '/',
-                            'children' => [
-                                [
-                                    'title'          => 'Trang chủ 1',
-                                    'reference_id'   => 1,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Trang chủ 2',
-                                    'reference_id'   => 2,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Trang chủ 3',
-                                    'reference_id'   => 3,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Trang chủ 4',
-                                    'reference_id'   => 4,
-                                    'reference_type' => Page::class,
-                                ],
-                            ],
                         ],
                         [
                             'title'    => 'Bán hàng',
                             'url'      => '/products',
-                            'children' => [
-                                [
-                                    'title' => 'Tất cả sản phẩm',
-                                    'url'   => '/products',
-                                ],
-                                [
-                                    'title'          => 'Danh mục sản phẩm',
-                                    'reference_id'   => 1,
-                                    'reference_type' => ProductCategory::class,
-                                ],
-                            ],
-                        ],
-                        [
-                            'title'    => 'Sản phẩm',
-                            'url'      => '#',
-                            'children' => [
-                                [
-                                    'title' => 'Sản phẩm Sidebar phải',
-                                    'url'   => str_replace(url(''), '', Product::find(1)->url),
-                                ],
-                                [
-                                    'title' => 'Sản phẩm Sidebar trái',
-                                    'url'   => str_replace(url(''), '', Product::find(2)->url),
-                                ],
-                                [
-                                    'title' => 'Sản phẩm full width',
-                                    'url'   => str_replace(url(''), '', Product::find(3)->url),
-                                ],
-                            ],
                         ],
                         [
                             'title'          => 'Tin tức',
                             'reference_id'   => 5,
                             'reference_type' => Page::class,
-                            'children'       => [
-                                [
-                                    'title'          => 'Tin tức Sidebar phải',
-                                    'reference_id'   => 5,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title'          => 'Tin tức Sidebar trái',
-                                    'reference_id'   => 13,
-                                    'reference_type' => Page::class,
-                                ],
-                                [
-                                    'title' => 'Bài viết Sidebar phải',
-                                    'url'   => str_replace(url(''), '', Post::find(1)->url),
-                                ],
-                                [
-                                    'title' => 'Bài viết Sidebar trái',
-                                    'url'   => str_replace(url(''), '', Post::find(2)->url),
-                                ],
-                                [
-                                    'title' => 'Bài viết Full Width',
-                                    'url'   => str_replace(url(''), '', Post::find(3)->url),
-                                ],
-                                [
-                                    'title' => 'Bài viết with kèm sản phẩm',
-                                    'url'   => str_replace(url(''), '', Post::find(4)->url),
-                                ],
-                            ],
                         ],
                         [
                             'title'          => 'Liên hệ',
