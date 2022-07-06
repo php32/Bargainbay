@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Botble\Base\Supports\BaseSeeder;
+use Database\Seeders\FaqSeeder;
 
 class DatabaseSeeder extends BaseSeeder
 {
@@ -37,8 +38,13 @@ class DatabaseSeeder extends BaseSeeder
         $this->call(UserSeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(AdsSeeder::class);
+        $this->call(FaqSeeder::class);
         $this->call(MenuSeeder::class);
         $this->call(WidgetSeeder::class);
         $this->call(ThemeOptionSeeder::class);
+
+        if (is_plugin_active('marketplace')) {
+            $this->call(MarketplaceSeeder::class);
+        }
     }
 }

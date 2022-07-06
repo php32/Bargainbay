@@ -14634,6 +14634,15 @@
             _createClass(MainCheckout, [{
                 key: "init",
                 value: function init() {
+                    var disablePaymentMethodsForm = function disablePaymentMethodsForm() {
+                        $('.payment-info-loading').show();
+                        $('.payment-checkout-btn').prop('disabled', true);
+                    };
+                    var enablePaymentMethodsForm = function enablePaymentMethodsForm() {
+                        $('.payment-info-loading').hide();
+                        $('.payment-checkout-btn').prop('disabled', false);
+                        document.dispatchEvent(new CustomEvent('payment-form-reloaded'));
+                    };
                     var target = '#main-checkout-product-info';
                     var loadShippingFeeAtTheFirstTime = function loadShippingFeeAtTheFirstTime() {
                         var shippingMethod = $(document).find('input[name=shipping_method]:checked').first();
@@ -14642,12 +14651,10 @@
                         }
                         if (shippingMethod.length) {
                             shippingMethod.trigger('click');
-                            $('.payment-info-loading').show();
-                            $('.payment-checkout-btn').prop('disabled', true);
+                            disablePaymentMethodsForm();
                             $('.mobile-total').text('...');
                             $(target).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option') + ' ' + target + ' > *', function() {
-                                $('.payment-info-loading').hide();
-                                $('.payment-checkout-btn').prop('disabled', false);
+                                enablePaymentMethodsForm();
                             });
                         }
                     };
@@ -14686,27 +14693,38 @@
                                 });
                             }
                         }
-                        $('.payment-info-loading').show();
-                        $('.payment-checkout-btn').prop('disabled', true);
+                        disablePaymentMethodsForm();
                         $(target).load(window.location.href + '?' + $.param(methods) + ' ' + target + ' > *', function() {
-                            $('.payment-info-loading').hide();
-                            $('.payment-checkout-btn').prop('disabled', false);
+                            enablePaymentMethodsForm();
                         });
                     };
                     loadShippingFeeAtTheSecondTime();
                     $(document).on('change', 'input.shipping_method_input', function() {
                         loadShippingFeeAtTheSecondTime();
                     });
+
+                    var shippingForm1 = '#main-checkout-product-info';
+                    $(document).on('change', '#wallet_amount', function(event) {
+                        disablePaymentMethodsForm();
+                        if ($(this).prop('checked')) {
+                            $(shippingForm1).load(window.location.href + '?wallet_use=1' + shippingForm1 + ' > *', function() {
+                                enablePaymentMethodsForm();
+                            });
+                        } else {
+                            $(shippingForm1).load(window.location.href + '?wallet_use=0' + shippingForm1 + ' > *', function() {
+                                enablePaymentMethodsForm();
+                            });
+                        }
+                    });
+
                     $(document).on('change', 'input[name=shipping_method]', function(event) {
                         // Fixed: set shipping_option value based on shipping_method change:
                         var $this = $(event.currentTarget);
                         $('input[name=shipping_option]').val($this.data('option'));
-                        $('.payment-info-loading').show();
-                        $('.payment-checkout-btn').prop('disabled', true);
+                        disablePaymentMethodsForm();
                         $('.mobile-total').text('...');
                         $(target).load(window.location.href + '?shipping_method=' + $this.val() + '&shipping_option=' + $this.data('option') + ' ' + target + ' > *', function() {
-                            $('.payment-info-loading').hide();
-                            $('.payment-checkout-btn').prop('disabled', false);
+                            enablePaymentMethodsForm();
                         });
                     });
                     $(document).on('change', '.customer-address-payment-form .address-control-item', function() {

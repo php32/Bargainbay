@@ -40,6 +40,8 @@ return [
         'other_settings_description'            => 'Settings for cart, review...',
         'enable_cart'                           => 'Enable shopping cart?',
         'enable_tax'                            => 'Enable tax?',
+        'enable_wishlist'                       => 'Enable wishlist?',
+        'enable_compare'                        => 'Enable compare?',
         'display_product_price_including_taxes' => 'Display product price including taxes?',
         'enable_review'                         => 'Enable review?',
         'enable_quick_buy_button'               => 'Enable quick buy button?',

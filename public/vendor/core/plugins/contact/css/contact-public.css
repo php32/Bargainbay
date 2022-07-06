@@ -1,6 +1,17 @@
 .contact-form * {
   box-sizing: border-box;
 }
+.contact-form input {
+  background: var(--color-grey-9);
+    border: 2px solid var(--color-grey-9);
+    border-radius: 50px;
+    box-shadow: none;
+    color: var(--color-body);
+    font-size: 13px;
+    height: 45px;
+    padding-left: 20px;
+    width: 100%;
+}
 .contact-form .button-loading {
   border: 1px solid #c4cdd5;
   cursor: default;

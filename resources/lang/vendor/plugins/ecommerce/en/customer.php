@@ -14,4 +14,8 @@ return [
         'description' => 'When a customer buy your product(s), you will know their order histories.',
         'button_text' => 'Create customer',
     ],
+    'phone'                      => 'Phone',
+    'phone_placeholder'          => 'Phone',
+    'avatar'                     => 'Avatar',
+    'dob'                        => 'Date of birth',
 ];

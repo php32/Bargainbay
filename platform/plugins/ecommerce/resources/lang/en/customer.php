@@ -18,4 +18,5 @@ return [
     'phone_placeholder'          => 'Phone',
     'avatar'                     => 'Avatar',
     'dob'                        => 'Date of birth',
+    'wallet_transaction'         => 'Wallet Transaction',
 ];

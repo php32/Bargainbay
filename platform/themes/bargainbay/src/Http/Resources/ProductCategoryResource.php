@@ -1,6 +1,6 @@
 <?php
 
-namespace Theme\Wowy\Http\Resources;
+namespace Theme\BargainBay\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

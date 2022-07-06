@@ -1,6 +1,6 @@
 <?php
 
-namespace Theme\Wowy\Http\Resources;
+namespace Theme\BargainBay\Http\Resources;
 
 use Botble\Blog\Http\Resources\CategoryResource;
 use Botble\Blog\Models\Category;

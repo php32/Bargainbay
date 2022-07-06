@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Theme\Wowy\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Theme\BargainBay\Http\Controllers', 'middleware' => 'web'], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
 
         Route::get('ajax/cart', 'WowyController@ajaxCart')
@@ -39,7 +39,7 @@ Route::group(['namespace' => 'Theme\Wowy\Http\Controllers', 'middleware' => 'web
 
 // Theme::routes();
 
-Route::group(['namespace' => 'Theme\Wowy\Http\Controllers', 'middleware' => ['web', 'core']], function () {
+Route::group(['namespace' => 'Theme\BargainBay\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
 
         Route::get('/', 'WowyController@getIndex')->name('public.index');

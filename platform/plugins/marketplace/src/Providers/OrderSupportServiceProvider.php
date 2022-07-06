@@ -440,6 +440,7 @@ class OrderSupportServiceProvider extends ServiceProvider
                 'wallet_amount' => (float)$wallet_amount,
             ]);
         }
+
         $orderAmount = ($wallet_amount != 0) ? $orderAmount - $wallet_amount : $orderAmount;
 
         $data = array_merge($request->input(), [
@@ -1334,7 +1335,7 @@ class OrderSupportServiceProvider extends ServiceProvider
         if ($order->store && $order->store->customer) {
             $customer = $order->store->customer;
             $vendorInfo = $customer->vendorInfo;
-            if (!$vendorInfo->id) {
+            if (!$vendorInfo->id && !empty($customer->id)) {
                 $vendorInfo = $this->app->make(VendorInfoInterface::class)
                     ->createOrUpdate([
                         'customer_id' => $customer->id,

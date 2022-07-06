@@ -80,7 +80,12 @@ class PageTable extends TableAbstract
                 return $item->status->toHtml();
             })
             ->addColumn('operations', function ($item) {
-                return $this->getOperations('pages.edit', 'pages.destroy', $item);
+                if ($item->template == 'homepage') {
+                    $this->hasActions = false;
+                    // return $this->getOperations('pages.edit', 'pages.destroy', $item);
+                } else {
+                    return $this->getOperations('pages.edit', 'pages.destroy', $item);
+                }
             });
 
         return $this->toJson($data);

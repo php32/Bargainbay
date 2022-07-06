@@ -12,6 +12,11 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
             'uses' => 'EcommerceController@getSettings',
         ]);
 
+        Route::get('wallet-transactions', [
+            'as'   => 'ecommerce.wallet-transactions',
+            'uses' => 'EcommerceController@getWalletTransaction',
+        ]);
+
         Route::post('settings', [
             'as'         => 'ecommerce.settings.post',
             'uses'       => 'EcommerceController@postSettings',

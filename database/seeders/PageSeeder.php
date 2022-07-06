@@ -121,6 +121,11 @@ class PageSeeder extends BaseSeeder
                     'template' => 'blog-right-sidebar',
                 ],
                 [
+                    'name'     => 'FAQs',
+                    'content'  => Html::tag('div', '[faq title="Frequently Asked Questions"][/faq]'),
+                    'template' => 'default',
+                ],
+                [
                     'name'     => 'Contact',
                     'content'  => Html::tag('p', '[google-map]502 New Street, Brighton VIC, Australia[/google-map]') .
                         Html::tag('p', '[our-offices][/our-offices]') .
@@ -264,6 +269,11 @@ class PageSeeder extends BaseSeeder
                     'name'     => 'Tin tức',
                     'content'  => Html::tag('p', '---'),
                     'template' => 'blog-right-sidebar',
+                ],
+                [
+                    'name'     => 'Câu hỏi thường gặp',
+                    'content'  => Html::tag('div', '[faq title="Các câu hỏi thường gặp"][/faq]'),
+                    'template' => 'default',
                 ],
                 [
                     'name'     => 'Liên hệ',

@@ -48,6 +48,11 @@ class MenuSeeder extends BaseSeeder
                             'reference_id'   => 6,
                             'reference_type' => Page::class,
                         ],
+                        [
+                            'title'          => 'FAQs',
+                            'reference_id'   => 7,
+                            'reference_type' => Page::class,
+                        ],
                     ],
                 ],
                 [
@@ -120,6 +125,11 @@ class MenuSeeder extends BaseSeeder
                             'reference_id'   => 12,
                             'reference_type' => Page::class,
                         ],
+                        [
+                            'title'          => 'FAQs',
+                            'reference_id'   => 7,
+                            'reference_type' => Page::class,
+                        ],
                     ],
                 ],
             ],
@@ -145,6 +155,11 @@ class MenuSeeder extends BaseSeeder
                         [
                             'title'          => 'Liên hệ',
                             'reference_id'   => 6,
+                            'reference_type' => Page::class,
+                        ],
+                        [
+                            'title'          => 'Câu hỏi thường gặp',
+                            'reference_id'   => 7,
                             'reference_type' => Page::class,
                         ],
                     ],
@@ -217,6 +232,11 @@ class MenuSeeder extends BaseSeeder
                         [
                             'title'          => 'Chính sách bảo mật',
                             'reference_id'   => 12,
+                            'reference_type' => Page::class,
+                        ],
+                        [
+                            'title'          => 'FAQs',
+                            'reference_id'   => 7,
                             'reference_type' => Page::class,
                         ],
                     ],

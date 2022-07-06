@@ -97,8 +97,14 @@
                                     <div class="col-6 float-right">
                                         @php
                                             $totalPrice = ($promotionDiscountAmount + $couponDiscountAmount - $shippingAmount) > Cart::instance('cart')->rawTotal() ? 0 : (Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount);
-                                            
+
+                                            if(fmod($totalPrice, 1) !== 0.00) {
+
+                                                $walletUse = (auth('customer')->user()->balance > (int) $totalPrice) ? (int) $totalPrice : auth('customer')->user()->balance;
+                                            } else {
                                                 $walletUse = (auth('customer')->user()->balance > $totalPrice) ? $totalPrice : auth('customer')->user()->balance;
+                                            }
+                                            
                                         @endphp
                                         <p class="price-text tax-price-text">{{ format_price($walletUse) }}</p>
                                     </div>

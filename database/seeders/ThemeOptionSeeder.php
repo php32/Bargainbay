@@ -36,7 +36,7 @@ class ThemeOptionSeeder extends BaseSeeder
             ],
             [
                 'key'   => 'theme-' . $theme . '-site_title',
-                'value' => 'BargainBay - Laravel Multipurpose eCommerce Script',
+                'value' => 'BargainBay',
             ],
             [
                 'key'   => 'theme-' . $theme . '-copyright',

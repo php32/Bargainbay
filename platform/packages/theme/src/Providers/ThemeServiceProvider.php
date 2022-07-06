@@ -67,15 +67,15 @@ class ThemeServiceProvider extends ServiceProvider
                     'url'         => '#',
                     'permissions' => [],
                 ])
-                ->registerItem([
-                    'id'          => 'cms-core-theme',
-                    'priority'    => 1,
-                    'parent_id'   => 'cms-core-appearance',
-                    'name'        => 'packages/theme::theme.name',
-                    'icon'        => null,
-                    'url'         => '',
-                    'permissions' => ['theme.index'],
-                ])
+                // ->registerItem([
+                //     'id'          => 'cms-core-theme',
+                //     'priority'    => 1,
+                //     'parent_id'   => 'cms-core-appearance',
+                //     'name'        => 'packages/theme::theme.name',
+                //     'icon'        => null,
+                //     'url'         => '',
+                //     'permissions' => ['theme.index'],
+                // ])
                 ->registerItem([
                     'id'          => 'cms-core-theme-option',
                     'priority'    => 4,

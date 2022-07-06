@@ -5,12 +5,17 @@ namespace Botble\Ecommerce\Http\Controllers;
 use Assets;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
+use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Http\Requests\StoreLocatorRequest;
 use Botble\Ecommerce\Http\Requests\UpdatePrimaryStoreRequest;
 use Botble\Ecommerce\Http\Requests\UpdateSettingsRequest;
+use Botble\Ecommerce\Models\Customer;
+use Botble\Ecommerce\Models\Transactions;
 use Botble\Ecommerce\Repositories\Interfaces\CurrencyInterface;
 use Botble\Ecommerce\Repositories\Interfaces\StoreLocatorInterface;
 use Botble\Ecommerce\Services\StoreCurrenciesService;
+use Botble\Ecommerce\Tables\TransactionsTable;
+use Botble\Ecommerce\Tables\WalletTransactionTable;
 use Botble\Setting\Supports\SettingStore;
 use EcommerceHelper;
 use Illuminate\Contracts\View\Factory;
@@ -239,5 +244,16 @@ class EcommerceController extends BaseController
     public function ajaxGetCountries(BaseHttpResponse $response)
     {
         return $response->setData(EcommerceHelper::getAvailableCountries());
+    }
+
+    public function getWalletTransaction(TransactionsTable $table)
+    {
+
+        page_title()->setTitle("Wallet Transactions");
+
+        $transactions = Transactions::where('confirmed', 1)->orderBy('created_at', 'desc')->get();
+
+        return $table->render('plugins/ecommerce::wallet.index', compact('transactions'));
+        // return view('plugins/ecommerce::wallet.index', compact('transactions'));
     }
 }

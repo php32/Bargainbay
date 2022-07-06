@@ -1,8 +1,8 @@
 {
-    "name": "Wowy",
-    "namespace": "Theme\\Wowy\\",
-    "description": "Wowy - Laravel Multipurpose eCommerce script",
-    "author": "Botble Technologies",
+    "name": "BargainBay",
+    "namespace": "Theme\\BargainBay\\",
+    "description": "BargainBay - Laravel Multipurpose eCommerce script",
+    "author": "BargainBay",
     "version": "1.2",
     "required_plugins": []
 }

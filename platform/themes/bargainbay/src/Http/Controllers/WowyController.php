@@ -1,6 +1,6 @@
 <?php
 
-namespace Theme\Wowy\Http\Controllers;
+namespace Theme\BargainBay\Http\Controllers;
 
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Http\Responses\BaseHttpResponse;
@@ -15,10 +15,10 @@ use DB;
 use EcommerceHelper;
 use Illuminate\Http\Request;
 use Theme;
-use Theme\Wowy\Http\Resources\BrandResource;
-use Theme\Wowy\Http\Resources\PostResource;
-use Theme\Wowy\Http\Resources\ProductCategoryResource;
-use Theme\Wowy\Http\Resources\ReviewResource;
+use Theme\BargainBay\Http\Resources\BrandResource;
+use Theme\BargainBay\Http\Resources\PostResource;
+use Theme\BargainBay\Http\Resources\ProductCategoryResource;
+use Theme\BargainBay\Http\Resources\ReviewResource;
 
 class WowyController extends PublicController
 {

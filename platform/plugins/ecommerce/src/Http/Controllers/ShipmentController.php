@@ -93,7 +93,7 @@ class ShipmentController extends BaseController
             'order_id'    => $shipment->order_id,
             'user_id'     => Auth::id() ?? 0,
         ]);
-
+        
         switch ($request->input('status')) {
             case ShippingStatusEnum::DELIVERED:
                 $order = $this->orderRepository->createOrUpdate(['status' => OrderStatusEnum::COMPLETED],

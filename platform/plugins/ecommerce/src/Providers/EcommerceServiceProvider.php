@@ -37,6 +37,8 @@ use Botble\Ecommerce\Models\ShippingRule;
 use Botble\Ecommerce\Models\ShippingRuleItem;
 use Botble\Ecommerce\Models\StoreLocator;
 use Botble\Ecommerce\Models\Tax;
+use Botble\Ecommerce\Models\Transactions;
+use Botble\Ecommerce\Models\Wallet;
 use Botble\Ecommerce\Models\Wishlist;
 use Botble\Ecommerce\Repositories\Caches\AddressCacheDecorator;
 use Botble\Ecommerce\Repositories\Caches\BrandCacheDecorator;
@@ -95,6 +97,7 @@ use Botble\Ecommerce\Repositories\Eloquent\ShippingRuleItemRepository;
 use Botble\Ecommerce\Repositories\Eloquent\ShippingRuleRepository;
 use Botble\Ecommerce\Repositories\Eloquent\StoreLocatorRepository;
 use Botble\Ecommerce\Repositories\Eloquent\TaxRepository;
+use Botble\Ecommerce\Repositories\Eloquent\WalletRepository;
 use Botble\Ecommerce\Repositories\Eloquent\WishlistRepository;
 use Botble\Ecommerce\Repositories\Interfaces\AddressInterface;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
@@ -124,6 +127,7 @@ use Botble\Ecommerce\Repositories\Interfaces\ShippingRuleInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ShippingRuleItemInterface;
 use Botble\Ecommerce\Repositories\Interfaces\StoreLocatorInterface;
 use Botble\Ecommerce\Repositories\Interfaces\TaxInterface;
+use Botble\Ecommerce\Repositories\Interfaces\WalletInterface;
 use Botble\Ecommerce\Repositories\Interfaces\WishlistInterface;
 use Botble\Ecommerce\Services\HandleApplyCouponService;
 use Botble\Ecommerce\Services\HandleRemoveCouponService;
@@ -346,6 +350,10 @@ class EcommerceServiceProvider extends ServiceProvider
             return new ProductLabelCacheDecorator(
                 new ProductLabelRepository(new ProductLabel)
             );
+        });
+
+        $this->app->bind(WalletInterface::class, function () {
+            return new WalletRepository(new Transactions);
         });
 
         Helper::autoload(__DIR__ . '/../../helpers');
@@ -609,6 +617,15 @@ class EcommerceServiceProvider extends ServiceProvider
                     'icon'        => 'fas fa-cogs',
                     'url'         => route('ecommerce.settings'),
                     'permissions' => ['ecommerce.settings'],
+                ])
+                ->registerItem([
+                    'id'          => 'wallet-tools',
+                    'priority'    => 55,
+                    'parent_id'   => 'cms-plugins-ecommerce',
+                    'name'        => 'Wallet Transaction',
+                    'icon'        => 'fas fa-wallet',
+                    'url'         => route('ecommerce.wallet-transactions'),
+                    'permissions' => [],
                 ]);
 
             if (EcommerceHelper::isTaxEnabled()) {

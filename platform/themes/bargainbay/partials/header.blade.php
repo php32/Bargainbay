@@ -319,14 +319,14 @@
                                     @if (EcommerceHelper::isWishlistEnabled())
                                         <div class="header-action-icon-2">
                                             <a href="{{ route('public.wishlist') }}">
-                                                <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-heart-white.svg') }}">
+                                                <img alt="bargainbay" src="{{ Theme::asset()->url('images/icons/icon-heart-white.svg') }}">
                                                 <span class="pro-count white">@if (auth('customer')->check())<span>{{ auth('customer')->user()->wishlist()->count() }}</span> @else <span>{{ Cart::instance('wishlist')->count() }}</span>@endif</span>
                                             </a>
                                         </div>
                                     @endif
                                     <div class="header-action-icon-2">
                                         <a class="mini-cart-icon" href="{{ route('public.cart') }}">
-                                            <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-cart-white.svg') }}">
+                                            <img alt="bargainbay" src="{{ Theme::asset()->url('images/icons/icon-cart-white.svg') }}">
                                             <span class="pro-count white">{{ Cart::instance('cart')->count() }}</span>
                                         </a>
                                         <div class="cart-dropdown-wrap cart-dropdown-hm2">
@@ -335,7 +335,7 @@
                                     </div>
                                     <div class="header-action-icon-2">
                                         <a href="{{ route('customer.login') }}">
-                                            <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-user-white.svg') }}">
+                                            <img alt="bargainbay" src="{{ Theme::asset()->url('images/icons/icon-user-white.svg') }}">
                                         </a>
                                     </div>
                                     <div class="header-action-icon-2 d-block d-lg-none">

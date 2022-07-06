@@ -36,7 +36,7 @@ app()->booted(function () {
             'label'      => __('Copyright'),
             'attributes' => [
                 'name'    => 'copyright',
-                'value'   => 'Copyright © 2021 Wowy all rights reserved. Powered by Botble.',
+                'value'   => 'Copyright © 2021 BargainBay all rights reserved. Powered by Botble.',
                 'options' => [
                     'class'        => 'form-control',
                     'placeholder'  => __('Change copyright'),

@@ -92,7 +92,7 @@
                     {!! apply_filters(ECOMMERCE_PRODUCT_DETAIL_EXTRA_HTML, null) !!}
                     <input type="hidden" name="id" class="hidden-product-id" value="{{ ($product->is_variation || !$product->defaultVariation->product_id) ? $product->id : $product->defaultVariation->product_id }}"/>
                     <div class="detail-extralink">
-                        @if (EcommerceHelper::isCartEnabled())
+                        @if (EcommerceHelper::isCartEnabled() && !$product->isOutOfStock())
                             <div class="detail-qty border radius">
                                 <input type="hidden" value="1" name="qty">
                                 <a href="#" class="qty-down"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
@@ -103,9 +103,11 @@
 
                         <div class="product-extra-link2 @if (EcommerceHelper::isQuickBuyButtonEnabled()) has-buy-now-button @endif">
                             @if (EcommerceHelper::isCartEnabled())
-                                <button type="submit" class="button button-add-to-cart @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" @if ($product->isOutOfStock()) disabled @endif>{{ __('Add to cart') }}</button>
+                                @if (!$product->isOutOfStock())
+                                    <button type="submit" class="button button-add-to-cart @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" @if ($product->isOutOfStock()) disabled @endif>{{ __('Add to cart') }}</button>
+                                @endif
                                 @if (EcommerceHelper::isQuickBuyButtonEnabled())
-                                    <button class="button button-buy-now @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" name="checkout" @if ($product->isOutOfStock()) disabled @endif>{{ __('Buy Now') }}</button>
+                                    <button class="button button-buy-now @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" name="checkout" @if ($product->isOutOfStock()) disabled @endif>@if ($product->isOutOfStock())  {{ __('Out of Stock') }} @else {{ __('Buy Now') }} @endif</button>
                                 @endif
                             @endif
 
