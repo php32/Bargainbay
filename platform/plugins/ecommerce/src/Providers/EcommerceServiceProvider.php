@@ -68,6 +68,7 @@ use Botble\Ecommerce\Repositories\Caches\ShippingRuleCacheDecorator;
 use Botble\Ecommerce\Repositories\Caches\ShippingRuleItemCacheDecorator;
 use Botble\Ecommerce\Repositories\Caches\StoreLocatorCacheDecorator;
 use Botble\Ecommerce\Repositories\Caches\TaxCacheDecorator;
+use Botble\Ecommerce\Repositories\Caches\WalletTransactionsCacheDecorator;
 use Botble\Ecommerce\Repositories\Caches\WishlistCacheDecorator;
 use Botble\Ecommerce\Repositories\Eloquent\AddressRepository;
 use Botble\Ecommerce\Repositories\Eloquent\BrandRepository;
@@ -97,7 +98,7 @@ use Botble\Ecommerce\Repositories\Eloquent\ShippingRuleItemRepository;
 use Botble\Ecommerce\Repositories\Eloquent\ShippingRuleRepository;
 use Botble\Ecommerce\Repositories\Eloquent\StoreLocatorRepository;
 use Botble\Ecommerce\Repositories\Eloquent\TaxRepository;
-use Botble\Ecommerce\Repositories\Eloquent\WalletRepository;
+use Botble\Ecommerce\Repositories\Eloquent\WalletTransactionsRepository;
 use Botble\Ecommerce\Repositories\Eloquent\WishlistRepository;
 use Botble\Ecommerce\Repositories\Interfaces\AddressInterface;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
@@ -127,7 +128,7 @@ use Botble\Ecommerce\Repositories\Interfaces\ShippingRuleInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ShippingRuleItemInterface;
 use Botble\Ecommerce\Repositories\Interfaces\StoreLocatorInterface;
 use Botble\Ecommerce\Repositories\Interfaces\TaxInterface;
-use Botble\Ecommerce\Repositories\Interfaces\WalletInterface;
+use Botble\Ecommerce\Repositories\Interfaces\WalletTransactionsInterface;
 use Botble\Ecommerce\Repositories\Interfaces\WishlistInterface;
 use Botble\Ecommerce\Services\HandleApplyCouponService;
 use Botble\Ecommerce\Services\HandleRemoveCouponService;
@@ -352,8 +353,10 @@ class EcommerceServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(WalletInterface::class, function () {
-            return new WalletRepository(new Transactions);
+        $this->app->bind(WalletTransactionsInterface::class, function () {
+            return new WalletTransactionsCacheDecorator(
+                new WalletTransactionsRepository(new Transactions)
+            );
         });
 
         Helper::autoload(__DIR__ . '/../../helpers');
@@ -610,6 +613,15 @@ class EcommerceServiceProvider extends ServiceProvider
                     'permissions' => ['customers.index'],
                 ])
                 ->registerItem([
+                    'id'          => 'wallet-tools',
+                    'priority'    => 14,
+                    'parent_id'   => 'cms-plugins-ecommerce',
+                    'name'        => 'plugins/ecommerce::wallet.transactions',
+                    'icon'        => 'fas fa-wallet',
+                    'url'         => route('orders.transactions.index'),
+                    // 'permissions' => [],
+                ])
+                ->registerItem([
                     'id'          => 'cms-plugins-ecommerce.settings',
                     'priority'    => 999,
                     'parent_id'   => 'cms-plugins-ecommerce',
@@ -617,15 +629,6 @@ class EcommerceServiceProvider extends ServiceProvider
                     'icon'        => 'fas fa-cogs',
                     'url'         => route('ecommerce.settings'),
                     'permissions' => ['ecommerce.settings'],
-                ])
-                ->registerItem([
-                    'id'          => 'wallet-tools',
-                    'priority'    => 55,
-                    'parent_id'   => 'cms-plugins-ecommerce',
-                    'name'        => 'Wallet Transaction',
-                    'icon'        => 'fas fa-wallet',
-                    'url'         => route('ecommerce.wallet-transactions'),
-                    'permissions' => [],
                 ]);
 
             if (EcommerceHelper::isTaxEnabled()) {

@@ -88,6 +88,10 @@ if (!defined('CUSTOMER_MODULE_SCREEN_NAME')) {
     define('CUSTOMER_MODULE_SCREEN_NAME', 'customer');
 }
 
+if (!defined('WALLET_MODULE_SCREEN_NAME')) {
+    define('WALLET_MODULE_SCREEN_NAME', 'wallet');
+}
+
 if (!defined('ECOMMERCE_PRODUCT_DETAIL_RENDER')) {
     define('ECOMMERCE_PRODUCT_DETAIL_RENDER', 'product_detail_render');
 }

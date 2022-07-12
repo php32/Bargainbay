@@ -245,15 +245,4 @@ class EcommerceController extends BaseController
     {
         return $response->setData(EcommerceHelper::getAvailableCountries());
     }
-
-    public function getWalletTransaction(TransactionsTable $table)
-    {
-
-        page_title()->setTitle("Wallet Transactions");
-
-        $transactions = Transactions::where('confirmed', 1)->orderBy('created_at', 'desc')->get();
-
-        return $table->render('plugins/ecommerce::wallet.index', compact('transactions'));
-        // return view('plugins/ecommerce::wallet.index', compact('transactions'));
-    }
 }

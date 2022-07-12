@@ -3,10 +3,8 @@
 namespace Botble\Ecommerce\Tables;
 
 use BaseHelper;
-use Botble\Ecommerce\Enums\OrderStatusEnum;
-use Botble\Ecommerce\Repositories\Interfaces\WalletInterface;
+use Botble\Ecommerce\Repositories\Interfaces\WalletTransactionsInterface;
 use Botble\Table\Abstracts\TableAbstract;
-use EcommerceHelper;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -17,29 +15,24 @@ class TransactionsTable extends TableAbstract
     /**
      * @var bool
      */
-    protected $hasActions = true;
+    protected $hasActions = false;
 
     /**
      * @var bool
      */
-    protected $hasFilter = true;
+    protected $hasFilter = false;
 
     /**
-     * OrderTable constructor.
+     * WalletTransactionTable constructor.
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
-     * @param WalletInterface $walletRepository
+     * @param WalletTransactionsInterface $walletTransactionsRepository
      */
-    public function __construct(DataTables $table, UrlGenerator $urlGenerator, WalletInterface $walletRepository)
+    public function __construct(DataTables $table, UrlGenerator $urlGenerator, WalletTransactionsInterface $walletTransactionsRepository)
     {
         parent::__construct($table, $urlGenerator);
 
-        $this->repository = $walletRepository;
-
-        if (!Auth::user()->hasPermission('orders.edit')) {
-            $this->hasOperations = false;
-            $this->hasActions = false;
-        }
+        $this->repository = $walletTransactionsRepository;
     }
 
     /**
@@ -56,7 +49,7 @@ class TransactionsTable extends TableAbstract
                 return $item->uuid;
             })
             ->editColumn('type', function ($item) {
-                return $item->type;
+                return ucfirst($item->type);
             })
             ->editColumn('amount', function ($item) {
                 return format_price($item->amount);
@@ -68,6 +61,10 @@ class TransactionsTable extends TableAbstract
                 return BaseHelper::formatDate($item->created_at);
             });
 
+        $data = $data
+            ->addColumn('operations', function ($item) {
+                return [];
+            });
 
         return $this->toJson($data);
     }
@@ -102,24 +99,24 @@ class TransactionsTable extends TableAbstract
     {
         $columns = [
             'uuid'      => [
-                'title' => 'Transaction #ID',
+                'title' => trans('plugins/ecommerce::wallet.transaction_id'),
                 'width' => '20px',
                 'class' => 'text-left',
             ],
             'type'  => [
-                'title' => 'Type',
+                'title' => trans('plugins/ecommerce::wallet.type'),
                 'class' => 'text-center',
             ],
             'amount'  => [
-                'title' => 'Amount',
+                'title' => trans('plugins/ecommerce::wallet.amount'),
                 'class' => 'text-center',
             ],
             'payable_id'  => [
-                'title' => 'Customer',
+                'title' => trans('plugins/ecommerce::wallet.customer'),
                 'class' => 'text-center',
             ],
             'created_at' => [
-                'title' => 'Date',
+                'title' => trans('plugins/ecommerce::wallet.date'),
                 'class' => 'text-left',
             ],
         ];
@@ -127,40 +124,6 @@ class TransactionsTable extends TableAbstract
         return $columns;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function buttons()
-    {
-        return $this->addCreateButton(route('orders.create'), 'orders.create');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function bulkActions(): array
-    {
-        return $this->addDeleteAction(route('orders.deletes'), 'orders.destroy', parent::bulkActions());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBulkChanges(): array
-    {
-        return [
-            'status'     => [
-                'title'    => trans('core/base::tables.status'),
-                'type'     => 'select',
-                'choices'  => OrderStatusEnum::labels(),
-                'validate' => 'required|in:' . implode(',', OrderStatusEnum::values()),
-            ],
-            'created_at' => [
-                'title' => trans('core/base::tables.created_at'),
-                'type'  => 'date',
-            ],
-        ];
-    }
 
     /**
      * {@inheritDoc}
@@ -171,9 +134,9 @@ class TransactionsTable extends TableAbstract
             !$this->request()->wantsJson() &&
             $this->request()->input('filter_table_id') !== $this->getOption('id')
         ) {
-            return view('plugins/ecommerce::orders.intro');
+            return view('plugins/ecommerce::wallet.intro');
         }
-
+        
         return parent::renderTable($data, $mergeData);
     }
 

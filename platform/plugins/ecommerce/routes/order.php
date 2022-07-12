@@ -5,6 +5,8 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
         Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
             Route::resource('', 'OrderController')->parameters(['' => 'order']);
 
+            Route::resource('transactions', 'WalletTransactionController')->parameters(['' => 'transactions']);
+
             Route::delete('items/destroy', [
                 'as'         => 'deletes',
                 'uses'       => 'OrderController@deletes',
@@ -94,6 +96,11 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
                 'uses'       => 'OrderController@postApplyCoupon',
                 'permission' => 'orders.create',
             ]);
+        });
+
+        Route::group(['prefix' => 'wallet', 'as' => 'orders.'], function () {
+
+            Route::resource('transactions', 'WalletTransactionController')->parameters(['' => 'transactions']);
         });
 
         Route::group(['prefix' => 'incomplete-orders', 'as' => 'orders.'], function () {
