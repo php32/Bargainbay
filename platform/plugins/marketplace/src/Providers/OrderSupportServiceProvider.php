@@ -590,6 +590,7 @@ class OrderSupportServiceProvider extends ServiceProvider
      */
     public function processWalletPaymentMethodPostCheckout($request, $wallet_amount)
     {
+        dd($wallet_amount);
         $transaction = auth('customer')->user()->withdraw($wallet_amount, null, false);
         $chargeId = $transaction->uuid;
         if (!$request->input('payment_method')) {

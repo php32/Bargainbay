@@ -29,4 +29,12 @@ class Wallet extends BaseModel
     {
         return $this->belongsTo(Customer::class, 'holder_id', 'id');
     }
+
+    /**
+     * @param float|int|string $amount
+     */
+    public function setBalanceAttribute($amount): void
+    {
+        $this->balance = number_format((float) $amount, 2);
+    }
 }

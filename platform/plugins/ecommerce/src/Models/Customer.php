@@ -7,7 +7,9 @@ use Bavix\Wallet\Interfaces\Customer as WalletCustomer;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\CanPay;
+use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Interfaces\WalletFloat;
 use Botble\Base\Supports\Avatar;
 use Botble\Ecommerce\Notifications\ResetPasswordNotification;
 use Eloquent;
@@ -23,9 +25,9 @@ use RvMedia;
 /**
  * @mixin Eloquent
  */
-class Customer extends Authenticatable implements Wallet, WalletCustomer, Confirmable
+class Customer extends Authenticatable implements Wallet, WalletFloat, WalletCustomer, Confirmable
 {
-    use Notifiable, HasWallet, CanPay, CanConfirm;
+    use Notifiable, HasWallet, HasWalletFloat, CanPay, CanConfirm;
 
     /**
      * @var string
